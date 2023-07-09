@@ -20,7 +20,15 @@ class MyApp extends StatelessWidget {
 }
 
 // リスト一覧画面用Widget
-class TodoListPage extends StatelessWidget {
+class TodoListPage extends StatefulWidget {
+  @override
+  _TodoListPageState createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
+  // Todoリストのデータ
+  List<String> todoList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,61 +40,34 @@ class TodoListPage extends StatelessWidget {
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          Card(
-            child: ListTile(
-              title: Text('ニンジンを買う'),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text('タマネギを買う'),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text('ジャガイモを買う'),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text('カレールーを買う'),
-            ),
-          ),
-          Card(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(
-                  Icons.favorite,
-                  color: Colors.pink,
-                  size: 24.0,
-                ),
-                Icon(
-                  Icons.audiotrack,
-                  color: Colors.green,
-                  size: 30.0,
-                ),
-                Icon(
-                  Icons.beach_access,
-                  color: Colors.blue,
-                  size: 36.0,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      body: ListView.builder(
+          itemCount: todoList.length,
+          itemBuilder: (context, index) {
+            return Card(
+              child: ListTile(
+                title: Text(todoList[index]),
+              ),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           // "push"で新規画面に遷移
-          Navigator.of(context).push(
+          // リスト追加画面から渡される値を受け取る
+          final newListText = await Navigator.of(context).push(
             MaterialPageRoute(builder: (context) {
               // 遷移先の画面としてリスト追加画面を指定
               return TodoAddPage();
             }),
           );
+          // リスト追加画面で入力されたテキストをリストに追加
+          if (newListText != null) {
+            // リスト追加
+            // キャンセルした場合は newListText が null となるので注意
+            setState(() {
+              // リスト追加
+              todoList.add(newListText);
+            });
+          }
         },
         child: const Icon(Icons.add),
       ),
@@ -100,7 +81,15 @@ class TodoListPage extends StatelessWidget {
 }
 
 // リスト追加画面用Widget
-class TodoAddPage extends StatelessWidget {
+class TodoAddPage extends StatefulWidget {
+  @override
+  _TodoAddPageState createState() => _TodoAddPageState();
+}
+
+class _TodoAddPageState extends State<TodoAddPage> {
+  // 入力されたテキストをデータとして持つ
+  String _text = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +107,16 @@ class TodoAddPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // テキスト入力
-            TextField(),
+            TextField(
+              // 入力された値を受け取る
+              onChanged: (String value) {
+                // データが変更したことを知らせる（画面を更新する）
+                setState(() {
+                  // データを変更
+                  _text = value;
+                });
+              },
+            ),
             const SizedBox(height: 8), // 8pxの空白
             Container(
               // 横幅いっぱいに広げる
@@ -129,8 +127,8 @@ class TodoAddPage extends StatelessWidget {
                   backgroundColor: Colors.deepPurple,
                 ),
                 onPressed: () {
-                  // "pop"で前の画面に戻る
-                  // Navigator.of(context).pop();
+                  // "pop"で前の画面に戻る&データを渡す
+                  Navigator.of(context).pop(_text);
                 },
                 child: const Text(
                   'リスト追加',
@@ -158,6 +156,3 @@ class TodoAddPage extends StatelessWidget {
     );
   }
 }
-
-
-
