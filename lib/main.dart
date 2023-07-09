@@ -6,118 +6,88 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Todo App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: TodoListPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  String _type = "偶数";
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      if (_counter % 2 == 0) {
-        _type = "偶数";
-      } else {
-        _type = "奇数";
-      }
-    });
-  }
-
+// リスト一覧画面用Widget
+class TodoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Row(
+        title: const Row(
+          children: [
+            Icon(Icons.home),
+            Text("リスト一覧"),
+          ],
+        ),
+      ),
+      body: ListView(
         children: [
-          Icon(Icons.home),
-          Text("ホーム"),
-        ],
-      )),
-      body: Column(
-        children: [
-          const Text("Hello World!"),
-          const Text("Hello World!"),
-          TextButton(
-            onPressed: () => {print("ボタンが押されたよ")},
-            child: const Text("テキストボタン"),
+          Card(
+            child: ListTile(
+              title: Text('ニンジンを買う'),
+            ),
           ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Icon(
-                Icons.favorite,
-                color: Colors.pink,
-                size: 24.0,
-              ),
-              Icon(
-                Icons.audiotrack,
-                color: Colors.green,
-                size: 30.0,
-              ),
-              Icon(
-                Icons.beach_access,
-                color: Colors.blue,
-                size: 36.0,
-              )
-            ],
+          Card(
+            child: ListTile(
+              title: Text('タマネギを買う'),
+            ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Text('$_counter'),
-              if (_counter % 2 == 0)
-                Text('$_type',
-                    style: TextStyle(fontSize: 20, color: Colors.blue))
-              else
-                Text('$_type',
-                    style: TextStyle(fontSize: 20, color: Colors.red))
-            ],
+          Card(
+            child: ListTile(
+              title: Text('ジャガイモを買う'),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              title: Text('カレールーを買う'),
+            ),
+          ),
+          Card(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Icon(
+                  Icons.favorite,
+                  color: Colors.pink,
+                  size: 24.0,
+                ),
+                Icon(
+                  Icons.audiotrack,
+                  color: Colors.green,
+                  size: 30.0,
+                ),
+                Icon(
+                  Icons.beach_access,
+                  color: Colors.blue,
+                  size: 36.0,
+                ),
+              ],
+            ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () {
+          // "push"で新規画面に遷移
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) {
+              // 遷移先の画面としてリスト追加画面を指定
+              return TodoAddPage();
+            }),
+          );
+        },
         child: const Icon(Icons.add),
       ),
       drawer: const Drawer(
@@ -125,11 +95,69 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Text("Drawer"),
         ),
       ),
-      endDrawer: const Drawer(
-        child: Center(
-          child: Text("End Drawer"),
+    );
+  }
+}
+
+// リスト追加画面用Widget
+class TodoAddPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Row(
+          children: [
+            Icon(Icons.home),
+            Text("リスト一覧"),
+          ],
+        ),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(64),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // テキスト入力
+            TextField(),
+            const SizedBox(height: 8), // 8pxの空白
+            Container(
+              // 横幅いっぱいに広げる
+              width: double.infinity,
+              // リスト追加ボタン
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                ),
+                onPressed: () {
+                  // "pop"で前の画面に戻る
+                  // Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'リスト追加',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8), // 8pxの空白
+            Container(
+              // 横幅いっぱいに広げる
+              width: double.infinity,
+              // キャンセルボタン
+              child: TextButton(
+                // ボタンをクリックした時の処理
+                onPressed: () {
+                  // "pop"で前の画面に戻る
+                  Navigator.of(context).pop();
+                },
+                child: Text('キャンセル'),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+
+
