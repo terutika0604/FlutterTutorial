@@ -48,6 +48,14 @@ class _TodoListPageState extends State<TodoListPage> {
               final item = todoList[index];
               return Dismissible(
                 key: Key(item),
+                confirmDismiss: (direction) async {
+                  return await showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialogSample();
+                    },
+                  );
+                },
                 // 消されたときのアクション
                 onDismissed: (direction) {
                   setState(() {
@@ -90,6 +98,32 @@ class _TodoListPageState extends State<TodoListPage> {
           child: Text("Drawer"),
         ),
       ),
+    );
+  }
+}
+
+class AlertDialogSample extends StatelessWidget {
+  const AlertDialogSample({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('データを消してしまってもいいですか？'),
+      content: Text('こうかいしませんね？'),
+      actions: <Widget>[
+        GestureDetector(
+          child: Text('いいえ'),
+          onTap: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        GestureDetector(
+          child: Text('はい'),
+          onTap: () {
+            Navigator.of(context).pop(true);
+          },
+        )
+      ],
     );
   }
 }
