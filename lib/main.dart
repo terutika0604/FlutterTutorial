@@ -142,7 +142,7 @@ class _TodoAddPageState extends State<TodoAddPage> {
                 ),
                 onPressed: () {
                   // "pop"で前の画面に戻る&データを渡す
-                  Navigator.of(context).pop(_text);
+                  if (_text.isNotEmpty) Navigator.of(context).pop(_text);
                 },
                 child: const Text(
                   'リスト追加',
