@@ -40,15 +40,29 @@ class _TodoListPageState extends State<TodoListPage> {
           ],
         ),
       ),
-      body: ListView.builder(
-          itemCount: todoList.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                title: Text(todoList[index]),
-              ),
-            );
-          }),
+      body: Container(
+        margin: const EdgeInsets.all(20),
+        child: ListView.builder(
+            itemCount: todoList.length,
+            itemBuilder: (context, index) {
+              final item = todoList[index];
+              return Dismissible(
+                key: Key(item),
+                // 消されたときのアクション
+                onDismissed: (direction) {
+                  setState(() {
+                    // todoList配列から要素を削除
+                    todoList.removeAt(index);
+                  });
+                },
+                child: Card(
+                  child: ListTile(
+                    title: Text(todoList[index]),
+                  ),
+                ),
+              );
+            }),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           // "push"で新規画面に遷移
