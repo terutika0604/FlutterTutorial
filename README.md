@@ -1,16 +1,23 @@
-# helloworld
+# FlutterTutorial
 
-A new Flutter project.
+Flutter学習のため作成したTodoアプリ
 
-## Getting Started
+スライプでダイアログを出し、確信した後に削除できる仕様
 
-This project is a starting point for a Flutter application.
+追加文字列が空白の場合追加できないようにした
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Demo
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+一覧画面
+
+![image](https://github.com/terutika0604/FlutterTutorial/assets/66721120/4ec6fa5b-4501-4ebf-81f2-5f95e224477e)
+
+追加画面
+
+![image](https://github.com/terutika0604/FlutterTutorial/assets/66721120/53cb808a-08d5-456f-b789-7e27107b3ec3)
+
+追加後
+
+![image](https://github.com/terutika0604/FlutterTutorial/assets/66721120/bdd47a78-dd1d-4da0-9372-df568b5f85fd)
+
